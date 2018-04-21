@@ -9,7 +9,6 @@ var subjectsController = require('../controllers').subjects
 
 module.exports = (app) => {
 	app.use('/api',authController.authentication);
-	
 	app.get('/api/subjects',subjectsController.list);
 	app.post('/api/subjects',subjectsController.create);
 	app.put('/api/subjects',subjectsController.update);
@@ -48,4 +47,5 @@ module.exports = (app) => {
   app.post('/login',authController.login);
 	app.post('/register',authController.register);
 	app.post('/resetpass',authController.resetpassword);
+  app.post('/logout',authController.logout);
 };

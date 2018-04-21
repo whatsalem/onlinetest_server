@@ -1,4 +1,5 @@
-var subjects = require('../models').subjects;
+var subjects = require('../models').subjects
+,result = require('../response-result')
 
 module.exports = {
   list(req, res) {

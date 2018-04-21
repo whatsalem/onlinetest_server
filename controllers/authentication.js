@@ -10,7 +10,6 @@ var transporter = nodemailer.createTransport({
     pass: 'rxecoseekhudqrzo'
   }
 });
-
 module.exports = {
   login(req, res) {  
     return users
@@ -47,7 +46,7 @@ module.exports = {
     .then(() => res.status(200).send({message: 'Bạn Đã Tạo Tài Khoản Mới'}))
     .catch(error => res.status(400).send(error));
   },
-  authentication(req, res) {
+  authentication(req, res,next) {
     if(req.headers.authorization){
       return users
       .find({ where:{
@@ -63,7 +62,6 @@ module.exports = {
           if(Date.now()>users.expired_time){
             res.send({message: 'Hết Hạn'});
           }
-          res.locals=res.users;
           next();
         }
       })
@@ -72,7 +70,6 @@ module.exports = {
     res.send({message: 'Không Có Token'});
   },
   resetpassword(req, res) {
-    var pas=uuidv4();
     return users
     .find({ where:{
       useemail:req.body.useemail
@@ -83,21 +80,34 @@ module.exports = {
           message: 'Sai Email'
         });
       }
-      transporter.sendMail({
-        from: 'whatsalemzolek@gmail.com',
-        to: users.useemail,
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!'+pas
-      }, function(error, info){
-        if (error) {
-          res.send(error);
-        } else {
-          res.send('Email sent: ' + info.response);
-        }
-      })
       return users
-      .update({useenc_password: bcrypt.hashSync(pas,8)})
-      .then(() => res.status(400).send('sss'))
+      .update({useenc_password: bcrypt.hashSync(12345,8)})
+      .then((users) =>{
+        transporter.sendMail({
+          from: 'whatsalemzolek@gmail.com',
+          to: users.useemail,
+          subject: 'Sending Email using Node.js',
+          text: 'Mật khẩu được đổi lại thành 12345'
+        })
+      }
+      )
+      .catch((error) => res.status(400).send(error)); 
+    })
+    .catch(error => res.status(400).send(error));
+  },
+
+  logout(req, res) {
+    return users
+    .findById(req.body.use_id)
+    .then(users => {
+      if (!users) {
+        return res.status(404).send({
+          message: 'khó'
+        });
+      }
+      return users
+      .update({token: null})
+      .then(() => res.status(400).send({message:'aaaa'}))
       .catch((error) => res.status(400).send(error)); 
     })
     .catch(error => res.status(400).send(error));
