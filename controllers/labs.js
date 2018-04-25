@@ -4,14 +4,14 @@ module.exports = {
   list(req, res) {
   return labs
     .all()
-    .then(labs => res.status(200).send(labs))
-    .catch(error => res.status(400).send(error));
+    .then((labs) => res.status(200).send(result.data(labs)))
+    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
 },
 create(req, res) {
   return labs
     .create(req.body)
     .then(labs => res.status(200).send(labs))
-    .catch(error => res.status(400).send(error));
+    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
 },
 update(req, res) {
   return labs
@@ -25,9 +25,9 @@ update(req, res) {
       return labs
         .update(req.body)
         .then(() => res.status(200).send(labs))
-        .catch((error) => res.status(400).send(error));
+        .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
     })
-    .catch((error) => res.status(400).send(error));
+    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
 },
 destroy(req, res) {
   return labs
@@ -41,8 +41,8 @@ destroy(req, res) {
       return labs
         .destroy()
         .then(() => res.status(204).send())
-        .catch(error => res.status(400).send(error));
+        .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
     })
-    .catch(error => res.status(400).send(error));
+    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
 }
 }

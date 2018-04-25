@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.BIGINT
-      }
+      },
+      subname: DataTypes.CHAR(100)
   },
   );
   subjects.associate = function(models) {

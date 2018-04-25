@@ -47,5 +47,4 @@ module.exports = (app) => {
   app.post('/login',authController.login);
 	app.post('/register',authController.register);
 	app.post('/resetpass',authController.resetpassword);
-  app.post('/logout',authController.logout);
 };

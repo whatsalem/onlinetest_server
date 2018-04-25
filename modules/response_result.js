@@ -3,6 +3,7 @@ var result ={
 	message:''
 }
 function message(mess){
+	result.errorCode = null;
 	result.message = mess;
 	result.data = null;
 	return result;
@@ -14,7 +15,9 @@ function error(code,mess){
 	return result;
 }
 function data(json){
+	result.errorCode = 0;
 	result.data = json;
+	result.message = null;
 	return result;
 }
 module.exports ={
