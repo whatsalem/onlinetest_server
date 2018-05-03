@@ -6,6 +6,7 @@ var subjectsController = require('../controllers').subjects
 , usertypesController = require('../controllers').usertypes
 , testtypesController = require('../controllers').testtypes
 , takersController = require('../controllers').takers
+, questionsController = require('../controllers').questions
 
 module.exports = (app) => {
 	app.use('/api',authController.authentication);
@@ -43,6 +44,11 @@ module.exports = (app) => {
   app.post('/api/takers',takersController.create);
   app.put('/api/takers',takersController.update);
   app.patch('/api/takers',takersController.destroy);
+
+  app.get('/api/questions',questionsController.list);
+  app.post('/api/questions',questionsController.create);
+  app.put('/api/questions',questionsController.update);
+  app.patch('/api/questions',questionsController.destroy);
   
   app.post('/login',authController.login);
 	app.post('/register',authController.register);

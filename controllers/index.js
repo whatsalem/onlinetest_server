@@ -7,7 +7,17 @@ var users = require('./users')
 , usertypes = require('./usertypes')
 , testtypes = require('./testtypes')
 , takers = require('./takers')
+, questions = require('./questions')
 
 module.exports = {
-	users,subjects,authentication,authorization,labs,semesters,usertypes,testtypes,takers
+	users,
+	subjects,
+	authentication,
+	authorization,
+	labs,
+	semesters,
+	usertypes,
+	testtypes,
+	takers,
+	questions
 };
