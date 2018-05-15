@@ -1,48 +1,33 @@
-var takers = require('../models').takers;
+var takers = require('../models').takers
+,result = require('../modules').response_result
 
-module.exports = {
+module.exports = 
+{
   list(req, res) {
-  return takers
+    return takers
     .all()
-    .then(takers => res.status(200).send(takers))
+    .then((takers) => res.status(200).send(result.data(takers)))
+    .catch(() => res.status(400).send(result.error(400,'Error!')));
+  },
+  create(req, res) 
+  {
+    return takers
+      .create(req.body)
+      .then(() => res.status(200).send(result.message('Insert successfully!')))
+      .catch(error => res.status(400).send(error));
+  },
+  update(req, res) 
+  {
+    return takers
+      .update(req.body,{ where: { tak_id: req.body.tak_id }})
+      .then(() => res.status(200).send(result.message('Update successfully!')))
+      .catch((error) => res.status(400).send(error));
+  },
+  destroy(req, res) 
+  {
+    return takers
+    .destroy({ where: { tak_id: req.body.tak_id }})
+    .then(() => res.status(200).send(result.message('Delete successfully!')))
     .catch(error => res.status(400).send(error));
-},
-create(req, res) {
-  return takers
-    .create(req.body)
-    .then(takers => res.status(200).send(takers))
-    .catch(error => res.status(400).send(error));
-},
-update(req, res) {
-  return takers
-    .findById(req.body.tak_id)
-    .then(takers => {
-      if (!takers) {
-        return res.status(404).send({
-          message: 'Không Tìm Thấy Chủ Đề',
-        });
-      }
-      return takers
-        .update(req.body)
-        .then(() => res.status(200).send(takers))
-        .catch((error) => res.status(400).send(error));
-    })
-    .catch((error) => res.status(400).send(error));
-},
-destroy(req, res) {
-  return takers
-    .findById(req.body.tak_id)
-    .then(takers => {
-      if (!takers) {
-        return res.status(400).send({
-          message: 'Không Tìm Thấy Chủ Đề',
-        });
-      }
-      return takers
-        .destroy()
-        .then(() => res.status(204).send())
-        .catch(error => res.status(400).send(error));
-    })
-    .catch(error => res.status(400).send(error));
-}
+  }
 }

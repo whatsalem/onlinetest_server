@@ -8,8 +8,12 @@ var users = require('./users')
 , testtypes = require('./testtypes')
 , takers = require('./takers')
 , questions = require('./questions')
+, parts =  require('./parts')
+, image_banks=require('./image_banks')
+, tests = require ('./tests')
 
-module.exports = {
+module.exports = 
+{
 	users,
 	subjects,
 	authentication,
@@ -19,5 +23,8 @@ module.exports = {
 	usertypes,
 	testtypes,
 	takers,
-	questions
+	questions,
+	parts,
+	image_banks,
+	tests,
 };

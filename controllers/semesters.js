@@ -1,48 +1,28 @@
-var semesters = require('../models').semesters;
-
+var semesters = require('../models').semesters
+,result = require('../modules').response_result
 module.exports = {
   list(req, res) {
-  return semesters
+    return semesters
     .all()
-    .then(semesters => res.status(200).send(semesters))
-    .catch(error => res.status(400).send(error));
-},
+    .then((semesters) => res.status(200).send(result.data(semesters)))
+    .catch(() => res.status(400).send(result.error(400,'Error!')));
+  },
 create(req, res) {
   return semesters
     .create(req.body)
-    .then(semesters => res.status(200).send(semesters))
+    .then(() => res.status(200).send(result.message('Insert successfully!')))
     .catch(error => res.status(400).send(error));
 },
 update(req, res) {
   return semesters
-    .findById(req.body.sem_id)
-    .then(semesters => {
-      if (!semesters) {
-        return res.status(404).send({
-          message: 'Không Tìm Thấy Học Kỳ',
-        });
-      }
-      return semesters
-        .update(req.body)
-        .then(() => res.status(200).send(semesters))
-        .catch((error) => res.status(400).send(error));
-    })
+    .update(req.body,{ where: { sem_id: req.body.sem_id }})
+    .then(() => res.status(200).send(result.message('Update successfully!')))
     .catch((error) => res.status(400).send(error));
 },
 destroy(req, res) {
   return semesters
-    .findById(req.body.sub_id)
-    .then(semesters => {
-      if (!semesters) {
-        return res.status(400).send({
-          message: 'Không Tìm Thấy Học Kỳ',
-        });
-      }
-      return semesters
-        .destroy()
-        .then(() => res.status(204).send())
-        .catch(error => res.status(400).send(error));
-    })
+    .destroy({ where: { sem_id: req.body.sem_id }})
+    .then(() => res.status(200).send(result.message('Delete successfully!')))
     .catch(error => res.status(400).send(error));
 }
 }

@@ -2,7 +2,8 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('options', {
-      opt_id: {
+      opt_id: 
+      {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,

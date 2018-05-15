@@ -1,8 +1,6 @@
 var users = require('../models').users
-
 ,uuidv4 = require('uuid/v4')
 ,bcrypt = require('bcryptjs')
-
 ,mail = require('../modules').mail
 ,result = require('../modules').response_result
 module.exports = {
@@ -14,21 +12,21 @@ module.exports = {
     )
     .then(users => {
       if (!users) {
-        return res.status(200).send(result.message('Sai Tài Khoản'));
+        return res.status(200).send(result.message('Account is not found'));
       }
       else{
         if(bcrypt.compareSync(req.body.useenc_password,users.useenc_password)==true){
           return users
           .update({token: uuidv4(),expired_time: Date.now()+1800000})
-          .then((users) => res.status(200).send(result.data(users)))
-          .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
+          .then((users) =>res.status(200).send(result.data(users)))
+          .catch(() => res.status(400).send(result.error(400,'Error!')));
         }
         else{
-          return res.status(200).send(result.message('Sai Mật Khẩu'));
+          return res.status(200).send(result.message('Wrong password'));
         }
       }
     })
-    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
+    .catch(() => res.status(400).send(result.error(400,'Error!')));
   },
   register(req, res) {
     return users
@@ -36,8 +34,8 @@ module.exports = {
       useaccount : req.body.useaccount,
       useenc_password : bcrypt.hashSync(req.body.useenc_password,8)  
     })
-    .then(() => res.status(200).send(result.message('Đăng Ký Thành Công')))
-    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
+    .then(() => res.status(200).send(result.message('Register successfully!')))
+    .catch(() => res.status(400).send(result.error(400,'Error!')));
   },
   authentication(req, res,next) {
     if(req.headers.authorization){
@@ -47,18 +45,18 @@ module.exports = {
       }})
       .then(users => {
         if (!users) {
-          return res.status(200).send(result.message('Sai Token'));
+          return res.status(200).send(result.message('Wrong token'));
         }
         else{
           if(Date.now()>users.expired_time){
-           return res.send(result.message('Hết Hạn'));
+           return res.send(result.message('Please login again!'));
           }
           next();
         }
       })
-      .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
+      .catch(() => res.status(400).send(result.error(400,'Error!')));
     }
-    return res.status(200).send(result.message('Không Có Token'));
+    return res.status(200).send(result.message('Token is not found'));
   },
   resetpassword(req, res) {
     return users
@@ -68,24 +66,24 @@ module.exports = {
     )
     .then(users => {
       if (!users) {
-        return res.status(200).send(result.message('Sai Email'));
+        return res.status(200).send(result.message('Wrong Email'));
       }
       else{
         return users
         .update({useenc_password: uuidv4()})
         .then((users) => mail.transporter1().sendMail(mail.passoption(users.useemail,users.useenc_password), function(error, info){
           if (error) {
-            return res.status(400).send(result.error(400,'Xảy Ra Lỗi'));
+            return res.status(400).send(result.error(400,'Error!'));
           } else {
             return users
             .update({useenc_password: bcrypt.hashSync(users.useenc_password,8)})
-            .then(() => res.status(200).send(result.message('Mật Khẩu Đã Được Đặt Lại')))
-            .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
+            .then(() => res.status(200).send(result.message('Password has been changed')))
+            .catch(() => res.status(400).send(result.error(400,'Error!')));
           }
         }))
-        .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));   
+        .catch(() => res.status(400).send(result.error(400,'Error!')));   
       }
     })
-    .catch(() => res.status(400).send(result.error(400,'Xảy Ra Lỗi')));
+    .catch(() => res.status(400).send(result.error(400,'Error!')));
   }
 }

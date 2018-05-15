@@ -1,22 +1,26 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var semesters = sequelize.define('semesters', {
-    sem_id: {
+    sem_id: 
+    {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    semsemester: {
+    semsemester: 
+    {
       allowNull: false,
       type:DataTypes.INTEGER,
-      unique: true
+      //unique: true
     },
-    semyear: {
+    semyear: 
+    {
       allowNull: false,
       type:DataTypes.INTEGER,
     },
-    semiscurrent: {
+    semiscurrent: 
+    {
       allowNull: false,
       type:DataTypes.INTEGER,
     }

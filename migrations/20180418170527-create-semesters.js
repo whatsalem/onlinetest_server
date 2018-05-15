@@ -2,30 +2,36 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('semesters', {
-      sem_id: {
+      sem_id: 
+      {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      semsemester: {
+      semsemester: 
+      {
         allowNull: false,
         type:Sequelize.INTEGER,
-	      unique: true
+	      //unique: true
       },
-      semyear: {
-        allowNull: false,
-        type:Sequelize.INTEGER,
-      },
-      semiscurrent: {
+      semyear: 
+      {
         allowNull: false,
         type:Sequelize.INTEGER,
       },
-      createdAt: {
+      semiscurrent: 
+      {
+        allowNull: false,
+        type:Sequelize.INTEGER,
+      },
+      createdAt: 
+      {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updatedAt: 
+      {
         allowNull: false,
         type: Sequelize.DATE
       }
